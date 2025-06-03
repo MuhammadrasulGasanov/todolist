@@ -78,7 +78,7 @@ flutter run -d chrome
 1. Откройте в Chrome на компьютере `chrome://inspect`
 2. Нажмите "Port forwarding..."
 3. Добавьте в поле "Port" - `3000`, а в поле "IP address and port" - `localhost:3000`
-4.Откройте Chrome на мобильном устройстве
+4. Откройте Chrome на мобильном устройстве
 5. Запустите:
 
 ```bash
