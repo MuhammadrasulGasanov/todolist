@@ -1,14 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_request.g.dart';
+part 'auth_request.freezed.dart';
 
-@JsonSerializable()
-class AuthRequest {
-  AuthRequest({required this.name, required this.password});
-  final String name;
-  final String password;
+@freezed
+sealed class AuthRequest with _$AuthRequest {
+  factory AuthRequest({required String login, required String password}) =
+      _AuthRequest;
   factory AuthRequest.fromJson(Map<String, dynamic> json) =>
       _$AuthRequestFromJson(json);
-
-  Map<String, dynamic> toJson() => _$AuthRequestToJson(this);
 }
