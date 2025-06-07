@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:todolist/data/models/auth_request.dart';
+import 'package:todolist/data/models/auth_response.dart';
 import 'package:todolist/data/models/category.dart';
 import 'package:todolist/data/models/task.dart';
 
@@ -6,7 +8,7 @@ class TodoApi {
   final Dio _dio;
 
   TodoApi(this._dio) {
-    _dio.options.baseUrl = 'http://localhost:3000';
+    _dio.options.baseUrl = 'http://185.173.94.122:8080';
   }
 
   Future<List<Task>> fetchTasks(String? filter) async {
@@ -50,6 +52,16 @@ class TodoApi {
       data: category.toJson(),
       options: Options(contentType: 'application/json'),
     );
+  }
+
+  Future<AuthResponse?> login(AuthRequest request) async {
+    final response = await _dio.post('/login', data: request.toJson());
+    return AuthResponse.fromJson(response.data);
+  }
+
+  Future<AuthResponse?> registration(AuthRequest request) async {
+    final response = await _dio.post('/register', data: request.toJson());
+    return AuthResponse.fromJson(response.data);
   }
 
   Future<void> addTask(Task todo) async {
