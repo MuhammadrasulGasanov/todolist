@@ -7,8 +7,8 @@ part 'auth_response.freezed.dart';
 sealed class AuthResponse with _$AuthResponse {
   factory AuthResponse({
     String? token,
-    required String userID,
-    required String userName,
+    required int id,
+    required String username,
   }) = _AuthResponse;
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) =>
