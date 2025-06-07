@@ -5,7 +5,7 @@ part 'auth_request.freezed.dart';
 
 @freezed
 sealed class AuthRequest with _$AuthRequest {
-  factory AuthRequest({required String login, required String password}) =
+  factory AuthRequest({required String username, required String password}) =
       _AuthRequest;
   factory AuthRequest.fromJson(Map<String, dynamic> json) =>
       _$AuthRequestFromJson(json);
