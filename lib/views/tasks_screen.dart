@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todolist/data/models/category.dart';
+import 'package:todolist/main.dart';
 import 'package:todolist/providers/providers.dart';
 import 'package:todolist/router.gr.dart';
 import 'package:todolist/widgets/drop_down_filters.dart';
@@ -15,6 +16,18 @@ class TaskListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
+        actionsPadding: EdgeInsets.all(12),
+        actions: [
+          OutlinedButton(
+            onPressed: () async {
+              await sharedPrefs.remove('token');
+              if (context.mounted) {
+                context.router.replaceAll([AuthRoute()]);
+              }
+            },
+            child: Text('Выход'),
+          ),
+        ],
         title: Text('Задачи'),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(56),
@@ -47,7 +60,10 @@ class TaskListScreen extends ConsumerWidget {
                             )
                             : notifier.state = null;
                         context.pushRoute(
-                          TaskEditorRoute(task: task, dropDownMode: DropDownMode.editing),
+                          TaskEditorRoute(
+                            task: task,
+                            dropDownMode: DropDownMode.editing,
+                          ),
                         );
                       },
                       onChecked:
