@@ -3,17 +3,39 @@ import 'package:todolist/data/models/auth_request.dart';
 import 'package:todolist/data/models/auth_response.dart';
 import 'package:todolist/data/models/category.dart';
 import 'package:todolist/data/models/task.dart';
+import 'package:todolist/main.dart';
 
 class TodoApi {
   final Dio _dio;
 
   TodoApi(this._dio) {
     _dio.options.baseUrl = 'http://185.173.94.122:8080';
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (!options.path.contains('/login') &&
+              !options.path.contains('/register')) {
+            final token = sharedPrefs.getString('token');
+            if (token != null && token.isNotEmpty) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
+          }
+          return handler.next(options);
+        },
+      ),
+    );
   }
 
   Future<List<Task>> fetchTasks(String? filter) async {
     final response = await _dio.get('/tasks');
-    final data = (response.data as List).map((t) => Task.fromJson(t)).toList();
+    late final List<Task> data;
+    if (response.data == null) {
+      data = [];
+    } else {
+      try {
+        data = (response.data as List).map((t) => Task.fromJson(t)).toList();
+      } catch (_) {}
+    }
     if (filter == null) return data;
     final filteredData = data.where((t) => t.category == filter).toList();
     return filteredData;
@@ -28,13 +50,13 @@ class TodoApi {
     return categories;
   }
 
-  Future<void> updateTask(String? id, Map<String, dynamic> data) async {
+  Future<void> updateTask(int? id, Map<String, dynamic> data) async {
     if (id != null) {
       await _dio.patch('/tasks/$id', data: data);
     }
   }
 
-  Future<void> deleteTask(String? id) async {
+  Future<void> deleteTask(int? id) async {
     if (id != null) {
       await _dio.delete('/tasks/$id');
     }
