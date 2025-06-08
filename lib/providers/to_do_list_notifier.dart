@@ -21,7 +21,7 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
 
   void refresh([String? filter]) async => await _loadTasks(filter);
 
-  Future<void> delete(String? id) async {
+  Future<void> delete(int? id) async {
     if (id != null && state.value != null) {
       final updated = state.value!.where((t) => t.id != id).toList();
       state = AsyncData(updated);
@@ -34,7 +34,7 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
     }
   }
 
-  Future<void> markCompleted(String? id, bool value) async {
+  Future<void> markCompleted(int? id, bool value) async {
     if (id != null && state.value != null) {
       final updated =
           state.value!.map((t) {

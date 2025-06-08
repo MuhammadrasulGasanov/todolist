@@ -11,8 +11,8 @@ class TaskList extends StatelessWidget {
   });
 
   final List<Task> tasks;
-  final void Function(String? id) onDismissed;
-  final void Function(String? id, bool value) onChecked;
+  final void Function(int? id) onDismissed;
+  final void Function(int? id, bool value) onChecked;
   final void Function(Task? task) onPressed;
 
   @override
