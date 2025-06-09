@@ -18,14 +18,14 @@ class TaskListScreen extends ConsumerWidget {
       appBar: AppBar(
         actionsPadding: EdgeInsets.all(12),
         actions: [
-          OutlinedButton(
+          IconButton(
             onPressed: () async {
               await sharedPrefs.remove('token');
               if (context.mounted) {
                 context.router.replaceAll([AuthRoute()]);
               }
             },
-            child: Text('Выход'),
+            icon: Icon(Icons.logout),
           ),
         ],
         title: Text('Задачи'),
@@ -69,7 +69,7 @@ class TaskListScreen extends ConsumerWidget {
                       onChecked:
                           (id, value) async => await ref
                               .read(todoListNotifierProvider.notifier)
-                              .markCompleted(id, value),
+                              .markTaskCompletion(id, value),
                       onDismissed:
                           (id) async => ref
                               .read(todoListNotifierProvider.notifier)
