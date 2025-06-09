@@ -43,16 +43,29 @@ class TodoApi {
 
   Future<List<TaskCategory>> fetchCategories() async {
     final response = await _dio.get('/categories');
-    final dynamicData = response.data as List<dynamic>;
-    if (dynamicData.isEmpty) return [];
-    final categories =
-        dynamicData.map((c) => TaskCategory.fromJson(c)).toList();
+    late final List<TaskCategory> categories;
+    if (response.data == null) {
+      categories = [];
+    } else {
+      try {
+        categories =
+            (response.data as List)
+                .map((c) => TaskCategory.fromJson(c))
+                .toList();
+      } catch (_) {}
+    }
     return categories;
   }
 
-  Future<void> updateTask(int? id, Map<String, dynamic> data) async {
+  Future<void> updateTask(int? id, Task data) async {
     if (id != null) {
-      await _dio.patch('/tasks/$id', data: data);
+      await _dio.put('/tasks/$id', data: data.toJson());
+    }
+  }
+
+  Future<void> markTaskCompletion(int? id, bool value) async {
+    if (id != null) {
+      await _dio.patch('/tasks/$id', data: {'completed': value});
     }
   }
 
@@ -62,18 +75,20 @@ class TodoApi {
     }
   }
 
-  Future<void> deleteCategory(String? id) async {
+  Future<void> deleteCategory(int? id) async {
     if (id != null) {
       await _dio.delete('/categories/$id');
     }
   }
 
   Future<void> addCategory(TaskCategory category) async {
-    await _dio.post(
-      '/categories',
-      data: category.toJson(),
-      options: Options(contentType: 'application/json'),
-    );
+    try {
+      await _dio.post(
+        '/categories',
+        data: category.toJson(),
+        options: Options(contentType: 'application/json'),
+      );
+    } catch (_) {}
   }
 
   Future<AuthResponse?> login(AuthRequest request) async {
