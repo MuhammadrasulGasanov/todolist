@@ -49,7 +49,7 @@ class _TaskListScreenState extends ConsumerState<TaskEditorScreen> {
     final updatedTask = _task.copyWith(
       title: titleController.text,
       description: descriptionController.text,
-      category: ref.read(filterProvider.notifier).state?.name,
+      categoryId: ref.read(filterProvider.notifier).state?.id,
     );
 
     updatedTask.id == null
