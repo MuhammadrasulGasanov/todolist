@@ -9,7 +9,7 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
     _loadTasks();
   }
 
-  Future<void> _loadTasks([String? filter]) async {
+  Future<void> _loadTasks([int? filter]) async {
     if (state is! AsyncData) state = const AsyncLoading();
     try {
       final tasks = await api.fetchTasks(filter);
@@ -19,7 +19,7 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
     }
   }
 
-  void refresh([String? filter]) async => await _loadTasks(filter);
+  void refresh([int? filter]) async => await _loadTasks(filter);
 
   Future<void> delete(int? id) async {
     if (id != null && state.value != null) {

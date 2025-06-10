@@ -60,7 +60,7 @@ class DropDownFilters extends ConsumerWidget {
                 if (dropDownMode == DropDownMode.filter) {
                   ref
                       .read(todoListNotifierProvider.notifier)
-                      .refresh(category?.name);
+                      .refresh(category?.id);
                 }
                 ref.read(filterProvider.notifier).state = category;
               },

@@ -26,8 +26,10 @@ class TodoApi {
     );
   }
 
-  Future<List<Task>> fetchTasks(String? filter) async {
-    final response = await _dio.get('/tasks');
+  Future<List<Task>> fetchTasks(int? filter) async {
+    final response = await _dio.get(
+      filter == null ? '/tasks' : '/tasks?category_id=$filter',
+    );
     late final List<Task> data;
     if (response.data == null) {
       data = [];
