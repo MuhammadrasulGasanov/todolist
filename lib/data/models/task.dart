@@ -13,7 +13,7 @@ sealed class Task with _$Task {
     @JsonKey(toJson: trim) required String title,
     @JsonKey(toJson: trim) String? description,
     @Default(false) bool completed,
-    @JsonKey(toJson: trim) String? category,
+    @JsonKey(name: 'category_id') int? categoryId,
     @JsonKey(name: 'due_date') DateTime? dueDate,
   }) = _Task;
   factory Task.fromJson(Map<String, Object?> json) => _$TaskFromJson(json);
