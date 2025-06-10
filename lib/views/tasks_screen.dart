@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todolist/data/models/category.dart';
 import 'package:todolist/main.dart';
 import 'package:todolist/providers/providers.dart';
 import 'package:todolist/router.gr.dart';
@@ -52,19 +51,23 @@ class TaskListScreen extends ConsumerWidget {
                     padding: const EdgeInsets.only(top: 24),
                     child: TaskList(
                       tasks: tasks,
-                      onPressed: (task) {
+                      onPressed: (task) async {
                         final notifier = ref.read(filterProvider.notifier);
-                        task?.category != null
-                            ? notifier.state = TaskCategory(
-                              name: task!.category!,
-                            )
-                            : notifier.state = null;
-                        context.pushRoute(
-                          TaskEditorRoute(
-                            task: task,
-                            dropDownMode: DropDownMode.editing,
-                          ),
-                        );
+                        if (task?.categoryId != null) {
+                          notifier.state = await ref
+                              .read(todoApiProvider)
+                              .fetchCategoryById(task?.categoryId);
+                        } else {
+                          notifier.state = null;
+                        }
+                        if (context.mounted) {
+                          context.pushRoute(
+                            TaskEditorRoute(
+                              task: task,
+                              dropDownMode: DropDownMode.editing,
+                            ),
+                          );
+                        }
                       },
                       onChecked:
                           (id, value) async => await ref
