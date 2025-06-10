@@ -32,13 +32,10 @@ class TodoApi {
     if (response.data == null) {
       data = [];
     } else {
-      try {
-        data = (response.data as List).map((t) => Task.fromJson(t)).toList();
-      } catch (_) {}
+      data = (response.data as List).map((t) => Task.fromJson(t)).toList();
     }
-    if (filter == null) return data;
-    final filteredData = data.where((t) => t.category == filter).toList();
-    return filteredData;
+    return data;
+    //TODO: implement filter
   }
 
   Future<List<TaskCategory>> fetchCategories() async {
@@ -55,6 +52,11 @@ class TodoApi {
       } catch (_) {}
     }
     return categories;
+  }
+
+  Future<TaskCategory?> fetchCategoryById(int? id) async {
+    final response = await _dio.get('/categories/$id');
+    return TaskCategory.fromJson(response.data);
   }
 
   Future<void> updateTask(int? id, Task data) async {
