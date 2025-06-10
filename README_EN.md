@@ -1,4 +1,3 @@
-
 # ✅ TODO LIST
 
 A simple Flutter task management app with category support.  
@@ -24,13 +23,15 @@ Users can:
 - **Dio** — HTTP requests
 - **Freezed / JsonSerializable** — model generation
 - **AutoRoute** — navigation
-- **json-server** — local mock API server
+- **Go** — backend server
+- **PostgreSQL** — database
 
 ---
 
 ## 🧰 Installation & Run
 
-> ❗ Note: The project uses `json-server`, which must be started separately.
+> ❗ Note: The app now works with a remote Go backend and PostgreSQL database.  
+> Local `json-server` is no longer used.
 
 ### 1. Clone the repository
 
@@ -51,21 +52,10 @@ flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-### 4. Run json-server
+### 4. Run the app
 
-Make sure `json-server` is installed:
-
-```bash
-npm install -g json-server
-```
-
-Start the server:
-
-```bash
-json-server --watch db.json --port 3000
-```
-
-### 5. Run the app
+The app connects to a remote server by default.  
+Make sure you have an internet connection.
 
 #### Option 1: On Web
 
@@ -73,41 +63,10 @@ json-server --watch db.json --port 3000
 flutter run -d chrome
 ```
 
-#### Option 2: On a physical Android device
-
-1.Open chrome://inspect in Chrome on your computer
-2.Click on “Port forwarding…”
-3.In the “Port” field, enter 3000, and in the “IP address and port” field, enter localhost:3000
-4.Open Chrome on your mobile device
-5. Run:
+#### Option 2: On a physical device
 
 ```bash
 flutter run
-```
->❗ Important: the project does not run on the emulator due to the specifics of how json-server works.
-
----
-
-## 📂 Example database
-
-```json
-{
-  "tasks": [
-    {
-      "id": "c01a",
-      "title": "Sample",
-      "description": "Task",
-      "completed": false,
-      "category": "example-category"
-    }
-  ],
-  "categories": [
-    {
-      "id": "fa36",
-      "name": "example-category"
-    }
-  ]
-}
 ```
 
 ---
