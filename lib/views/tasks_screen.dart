@@ -82,7 +82,10 @@ class TaskListScreen extends ConsumerWidget {
             },
           ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.pushRoute(TaskEditorRoute()),
+        onPressed: () {
+          ref.read(filterProvider.notifier).state = null;
+          context.pushRoute(TaskEditorRoute());
+        },
         child: Icon(Icons.add),
       ),
     );

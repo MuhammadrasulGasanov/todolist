@@ -20,7 +20,7 @@ class DropDownFilters extends ConsumerWidget {
             return DropdownMenu<TaskCategory?>(
               width: MediaQuery.of(context).size.width - 32,
               initialSelection:
-                  dropDownMode == DropDownMode.editing
+                  dropDownMode != DropDownMode.filter
                       ? ref.watch(filterProvider.notifier).state
                       : null,
               dropdownMenuEntries: [
@@ -43,6 +43,9 @@ class DropDownFilters extends ConsumerWidget {
                                   categoriesNotifierProvider.notifier,
                                 );
                                 await notifier.deleteCategory(e);
+                                ref
+                                    .read(todoListNotifierProvider.notifier)
+                                    .refresh();
                                 final selectedValue = ref.read(
                                   filterProvider.notifier,
                                 );
