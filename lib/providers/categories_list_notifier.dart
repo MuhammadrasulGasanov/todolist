@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todolist/data/models/category.dart';
 import 'package:todolist/data/todo_api.dart';
-import 'package:todolist/providers/providers.dart';
 
 class CategoriesListNotifier
     extends StateNotifier<AsyncValue<List<TaskCategory?>>> {
@@ -24,15 +23,6 @@ class CategoriesListNotifier
   Future<void> deleteCategory(TaskCategory? category) async {
     if (category == null) return;
     try {
-      final asyncTasks = ref.read(todoListNotifierProvider);
-      final tasks = asyncTasks.value;
-      if (tasks != null) {
-        for (final i in tasks) {
-          if (i.category == category.name) {
-            await api.updateTask(i.id, {'category': null});
-          }
-        }
-      }
       await api.deleteCategory(category.id);
       await refresh();
     } catch (e, st) {
