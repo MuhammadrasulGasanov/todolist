@@ -49,14 +49,14 @@ class _TaskListScreenState extends ConsumerState<TaskEditorScreen> {
     final updatedTask = _task.copyWith(
       title: titleController.text,
       description: descriptionController.text,
-      category: ref.read(filterProvider.notifier).state?.name,
+      categoryId: ref.read(filterProvider.notifier).state?.id,
     );
 
     updatedTask.id == null
         ? await ref.read(todoApiProvider).addTask(updatedTask)
         : await ref
             .read(todoApiProvider)
-            .updateTask(updatedTask.id, updatedTask.toJson());
+            .updateTask(updatedTask.id, updatedTask);
 
     ref.read(todoListNotifierProvider.notifier).refresh();
     if (context.mounted) {

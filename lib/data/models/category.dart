@@ -6,7 +6,7 @@ part 'category.g.dart';
 @JsonSerializable()
 class TaskCategory {
   @JsonKey(includeToJson: false)
-  final String? id;
+  final int? id;
 
   @JsonKey(toJson: trim)
   final String name;

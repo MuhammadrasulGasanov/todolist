@@ -9,8 +9,8 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
     _loadTasks();
   }
 
-  Future<void> _loadTasks([String? filter]) async {
-    state = const AsyncLoading();
+  Future<void> _loadTasks([int? filter]) async {
+    if (state is! AsyncData) state = const AsyncLoading();
     try {
       final tasks = await api.fetchTasks(filter);
       state = AsyncData(tasks);
@@ -19,9 +19,9 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
     }
   }
 
-  void refresh([String? filter]) async => await _loadTasks(filter);
+  void refresh([int? filter]) async => await _loadTasks(filter);
 
-  Future<void> delete(String? id) async {
+  Future<void> delete(int? id) async {
     if (id != null && state.value != null) {
       final updated = state.value!.where((t) => t.id != id).toList();
       state = AsyncData(updated);
@@ -34,7 +34,7 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
     }
   }
 
-  Future<void> markCompleted(String? id, bool value) async {
+  Future<void> markTaskCompletion(int? id, bool value) async {
     if (id != null && state.value != null) {
       final updated =
           state.value!.map((t) {
@@ -42,7 +42,7 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
           }).toList();
       state = AsyncData(updated);
       try {
-        await api.updateTask(id, {'completed': value});
+        await api.markTaskCompletion(id, value);
         await _loadTasks();
       } catch (e, st) {
         state = AsyncError(e, st);
