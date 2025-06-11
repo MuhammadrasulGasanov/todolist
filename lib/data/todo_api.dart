@@ -37,7 +37,6 @@ class TodoApi {
       data = (response.data as List).map((t) => Task.fromJson(t)).toList();
     }
     return data;
-    //TODO: implement filter
   }
 
   Future<List<TaskCategory>> fetchCategories() async {
