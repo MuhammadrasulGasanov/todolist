@@ -9,7 +9,7 @@ class TodoApi {
   final Dio _dio;
 
   TodoApi(this._dio) {
-    _dio.options.baseUrl = 'http://185.173.94.122:8080';
+    _dio.options.baseUrl = 'https://gasanovrasul.ru';
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
