@@ -19,7 +19,7 @@ class TodoListNotifier extends StateNotifier<AsyncValue<List<Task>>> {
     }
   }
 
-  void refresh([int? filter]) async => await _loadTasks(filter);
+  Future<void> refresh([int? filter]) async => await _loadTasks(filter);
 
   Future<void> delete(int? id) async {
     if (id != null && state.value != null) {

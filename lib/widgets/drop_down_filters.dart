@@ -43,7 +43,7 @@ class DropDownFilters extends ConsumerWidget {
                                   categoriesNotifierProvider.notifier,
                                 );
                                 await notifier.deleteCategory(e);
-                                ref
+                                await ref
                                     .read(todoListNotifierProvider.notifier)
                                     .refresh();
                                 final selectedValue = ref.read(

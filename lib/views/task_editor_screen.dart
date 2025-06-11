@@ -58,7 +58,7 @@ class _TaskListScreenState extends ConsumerState<TaskEditorScreen> {
             .read(todoApiProvider)
             .updateTask(updatedTask.id, updatedTask);
 
-    ref.read(todoListNotifierProvider.notifier).refresh();
+    await ref.read(todoListNotifierProvider.notifier).refresh();
     if (context.mounted) {
       Navigator.pop(context);
     }
