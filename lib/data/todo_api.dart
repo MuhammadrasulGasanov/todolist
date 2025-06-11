@@ -84,14 +84,19 @@ class TodoApi {
     }
   }
 
-  Future<void> addCategory(TaskCategory category) async {
+  Future<TaskCategory?> addCategory(TaskCategory category) async {
+    TaskCategory? data;
     try {
-      await _dio.post(
+      final response = await _dio.post(
         '/categories',
         data: category.toJson(),
         options: Options(contentType: 'application/json'),
       );
-    } catch (_) {}
+      data = TaskCategory.fromJson(response.data);
+      return data;
+    } catch (_) {
+      return data;
+    }
   }
 
   Future<AuthResponse?> login(AuthRequest request) async {

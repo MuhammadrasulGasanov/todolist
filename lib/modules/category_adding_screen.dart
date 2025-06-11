@@ -41,10 +41,10 @@ class _TaskListScreenState extends ConsumerState<CategoryAddingScreen> {
                 });
                 if (_validateField) return;
                 final category = TaskCategory(name: categoryName!);
-                await ref
+                final data = await ref
                     .read(categoriesNotifierProvider.notifier)
                     .addCategory(category);
-                if (context.mounted) context.maybePop(category);
+                if (context.mounted) context.maybePop(data);
               },
               child: Text('Добавить'),
             ),

@@ -30,8 +30,8 @@ class CategoriesListNotifier
     }
   }
 
-  Future<void> addCategory(TaskCategory? category) async {
-    if (state.value == null) return;
+  Future<TaskCategory?> addCategory(TaskCategory? category) async {
+    if (state.value == null) return null;
     try {
       final allCategories = state.value!;
       bool contains = false;
@@ -39,10 +39,13 @@ class CategoriesListNotifier
         if (c?.name == category?.name) contains = true;
       }
       final canPost = category != null && (allCategories.isEmpty || !contains);
-      if (canPost) await api.addCategory(category);
+      TaskCategory? data;
+      if (canPost) data = await api.addCategory(category);
       await refresh();
+      return data;
     } catch (e, st) {
       state = AsyncError(e, st);
+      return null;
     }
   }
 }
