@@ -45,40 +45,51 @@ class TaskListScreen extends ConsumerWidget {
             error: (e, st) => Center(child: Text('$e')),
             loading: () => Center(child: CircularProgressIndicator()),
             data: (tasks) {
-              return tasks.isEmpty
-                  ? ListTile(title: Text('Пусто'))
-                  : Padding(
-                    padding: const EdgeInsets.only(top: 24),
-                    child: TaskList(
-                      tasks: tasks,
-                      onPressed: (task) async {
-                        final notifier = ref.read(filterProvider.notifier);
-                        if (task?.categoryId != null) {
-                          notifier.state = await ref
-                              .read(todoApiProvider)
-                              .fetchCategoryById(task?.categoryId);
-                        } else {
-                          notifier.state = null;
-                        }
-                        if (context.mounted) {
-                          context.pushRoute(
-                            TaskEditorRoute(
-                              task: task,
-                              dropDownMode: DropDownMode.editing,
-                            ),
-                          );
-                        }
-                      },
-                      onChecked:
-                          (id, value) async => await ref
-                              .read(todoListNotifierProvider.notifier)
-                              .markTaskCompletion(id, value),
-                      onDismissed:
-                          (id) async => ref
-                              .read(todoListNotifierProvider.notifier)
-                              .delete(id),
-                    ),
-                  );
+              return RefreshIndicator(
+                onRefresh:
+                    () async =>
+                        await ref
+                            .read(todoListNotifierProvider.notifier)
+                            .refresh(),
+
+                child:
+                    tasks.isEmpty
+                        ? ListTile(title: Text('Пусто'))
+                        : Padding(
+                          padding: const EdgeInsets.only(top: 24),
+                          child: TaskList(
+                            tasks: tasks,
+                            onPressed: (task) async {
+                              final notifier = ref.read(
+                                filterProvider.notifier,
+                              );
+                              if (task?.categoryId != null) {
+                                notifier.state = await ref
+                                    .read(todoApiProvider)
+                                    .fetchCategoryById(task?.categoryId);
+                              } else {
+                                notifier.state = null;
+                              }
+                              if (context.mounted) {
+                                context.pushRoute(
+                                  TaskEditorRoute(
+                                    task: task,
+                                    dropDownMode: DropDownMode.editing,
+                                  ),
+                                );
+                              }
+                            },
+                            onChecked:
+                                (id, value) async => await ref
+                                    .read(todoListNotifierProvider.notifier)
+                                    .markTaskCompletion(id, value),
+                            onDismissed:
+                                (id) async => ref
+                                    .read(todoListNotifierProvider.notifier)
+                                    .delete(id),
+                          ),
+                        ),
+              );
             },
           ),
       floatingActionButton: FloatingActionButton(
